@@ -1,0 +1,201 @@
+#kratos-widget-area .widget {
+	margin: 0 0 25px;
+	padding: 30px;
+	background-color: #fff;
+	box-shadow: 0 1px 2px rgba(0,0,0,.1);
+	border-radius: 0
+}
+
+#kratos-widget-area .amadeus_about {
+	padding: 0
+}
+
+#kratos-widget-area .widget_kratos_poststab {
+	padding: 15px 30px
+}
+
+.widget img {
+	max-width: 100%;
+	height: auto
+}
+
+.widget a {
+	color: #4C4C4C;
+	text-decoration: none;
+	-webkit-transition: color .3s;
+	transition: color .3s
+}
+
+.widget a:hover {
+	color: #618EBA
+}
+
+.widget li {
+	padding-top: 2px;
+	padding-bottom: 2px
+}
+
+.widget .children {
+	padding-left: 30px
+}
+
+.tab-content {
+	margin: 0 0 -18px
+}
+
+.tab-content .list-group a:last-child,.widget_kratos_poststab .tab-content .list-group a:nth-last-child(2) {
+	border-bottom: none
+}
+
+#kratos-widget-area .widget-title {
+	position: relative;
+	margin: 0 0 15px;
+	padding-bottom: 15px;
+	border-bottom: 1px solid #e7e7e7
+}
+
+#kratos-widget-area .widget-title::after {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	height: 2.5px!important;
+	width: 73px;
+	background-color: #00a2ff;
+	content: ''
+}
+
+#kratos-widget-area .widget_kratos_tags .widget-title::after {
+	height: 2px!important
+}
+
+.widget select {
+	max-width: 100%
+}
+
+.widget_archive ul,.widget_categories ul,.widget_pages ul,.widget_recent_comments ul,.widget_recent_entries ul {
+	list-style: none;
+	padding: 0
+}
+
+.widget_archive li::before,.widget_categories li::before,.widget_pages li::before,.widget_recent_comments li::before,.widget_recent_entries li::before {
+	font-family: Fontawesome;
+	font-size: 15px
+}
+
+.widget_recent_entries li::before {
+	content: '\f040';
+	margin-right: 5px
+}
+
+.widget_archive li::before {
+	content: '\f133';
+	margin-right: 8px
+}
+
+.widget_pages li::before {
+	content: '\f016';
+	margin-right: 8px
+}
+
+.widget_recent_comments li::before {
+	content: '\f0e5';
+	margin-right: 8px
+}
+
+.widget_categories li::before {
+	content: '\f114';
+	margin-right: 8px
+}
+
+.tag_clouds a {
+	display: inline-block;
+	margin: 0 2px 4px 0;
+	padding: 4px 12px;
+	border: 1px solid #f0f0f0;
+	color: #666;
+	text-transform: uppercase;
+	line-height: 19px;
+	font-size: 13px!important
+}
+
+.amadeus_recent_comments ul,.amadeus_recent_posts_widget ul {
+	list-style: none;
+	padding: 0
+}
+
+.recent-comment img {
+	margin-right: 15px;
+	float: left
+}
+
+.amadeus_recent_posts_widget .recent-thumb {
+	padding-left: 0
+}
+
+.amadeus_recent_posts_widget .col-md-12,.amadeus_recent_posts_widget .col-md-9 {
+	padding: 0
+}
+
+.amadeus_recent_posts_widget .post-date,.widget_recent_entries .post-date {
+	color: #9d9d9d;
+	font-size: 12px
+}
+
+.amadeus_recent_posts_widget h4 {
+	margin: 0 0 8px
+}
+
+.amadeus_recent_comments .list-group-item,.amadeus_recent_posts_widget .list-group-item {
+	padding-bottom: 15px;
+	margin-bottom: 15px;
+	border-bottom: 1px solid #eaeaea
+}
+
+.amadeus_recent_comments .list-group-item:last-of-type,.amadeus_recent_posts_widget .list-group-item:last-of-type {
+	border-bottom: 0
+}
+
+.photo-wrapper {
+	width: 100%
+}
+
+.photo-wrapper img {
+	margin: -50px 0 0;
+	max-height: 90px;
+	border: rgba(255,255,255,.4) 4px solid;
+	border-radius: 50%
+}
+
+.photo-background {
+	height: 120px
+}
+
+.amadeus_about p {
+	margin-bottom: 1em;
+	font-size: 16px;
+	margin: 0
+}
+
+.widget_categories ul {
+	margin-bottom: 1em;
+	font-size: 16px
+}
+
+.amadeus_about .textwidget {
+	margin: 10px 30px 30px
+}
+
+.widget_kratos_ad img {
+	max-width: 300px;
+	height: auto
+}
+
+.widget_kratos_search input {
+	height: 35px;
+	border: 1px solid #ccc;
+	border-radius: 0
+}
+
+.widget_kratos_search .form-group {
+	margin-bottom: 0
+}

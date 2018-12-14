@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/pagination.html' import render_pagination %}
+{% from 'macros.html' import photo_card, user_card with context %}
+{% block title %}Search: {{ q }}{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>Search: {{ q }}</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="nav nav-pills flex-column" role="tablist" aria-orientation="vertical">
+{#                <a class="nav-item nav-link {% if category == 'user' %}active{% endif %}"#}
+{#                   href="{{ url_for('.search', q=q, category='user') }}">User</a>#}
+                <a class="nav-item nav-link {% if category == 'post' %}active{% endif %}"
+                   href="{{ url_for('.search', q=q, category='post') }}">Post</a>
+                <a class="nav-item nav-link {% if category == 'comment' %}active{% endif %}"
+                   href="{{ url_for('.search', q=q, category='comment') }}">Comment</a>
+            </div>
+        </div>
+        <div class="col-md-9">
+            {% if results %}
+                <h5>{{ results|length }} results</h5>
+                {% for item in results %}
+{#                    {% if category == 'post' %}#}
+                        {{ item }}
+{#                        <h3 class="text-primary"><a href="{{ url_for('.show_post', post_id=item.id) }}">{{ item.title }}</a></h3>#}
+{#                        <p>#}
+{#                            {{ item.body|striptags|truncate }}#}
+{#                            <small><a href="{{ url_for('.show_post', post_id=item.id) }}">Read More</a></small>#}
+{#                        </p>#}
+{#                    {% elif category == 'user' %}#}
+{#                        {{ user_card(item) }}#}
+{#                    {% endif %}#}
+                {% endfor %}
+            {% else %}
+                <h5 class="tip">No results.</h5>
+            {% endif %}
+        </div>
+    </div>
+    {% if results %}
+        <div class="page-footer">
+            {{ render_pagination(pagination, align='right') }}
+        </div>
+    {% endif %}
+{% endblock %}

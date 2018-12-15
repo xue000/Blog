@@ -1,4 +1,4 @@
-from flask import render_template, Blueprint, request, flash, redirect, url_for, current_app
+from flask import render_template, Blueprint, request, flash, redirect, url_for, current_app, abort
 from blog.extensions import db
 from blog.models import User, Post, Comment, Category
 from flask_login import current_user, login_required
@@ -16,6 +16,7 @@ def index():
     posts = pagination.items
     categories = Category.query.all()
     return render_template('main/index.html', pagination=pagination, posts=posts, categories=categories)
+
 
 @main_bp.route('/category/<int:category_id>')
 def show_category(category_id):
@@ -63,17 +64,18 @@ def show_post(post_id):
 
 @main_bp.route('/post/<int:post_id>/edit', methods=['GET', 'POST'])
 @login_required
-@permission_required('MODERATE')
 def edit_post(post_id):
     form = PostForm()
     post = Post.query.get_or_404(post_id)
+    if current_user != post.author and not current_user.can('MODERATE'):
+        abort(403)
     if form.validate_on_submit():
         post.title = form.title.data
         post.body = form.body.data
         post.category = Category.query.get(form.category.data)
         db.session.commit()
         flash('Post updated.', 'success')
-        return redirect(url_for('blog.show_post', post_id=post.id))
+        return redirect(url_for('main.show_post', post_id=post.id))
     form.title.data = post.title
     form.body.data = post.body
     form.category.data = post.category_id
@@ -81,9 +83,11 @@ def edit_post(post_id):
 
 @main_bp.route('/post/<int:post_id>/delete', methods=['POST'])
 @login_required
-@permission_required('MODERATE')
 def delete_post(post_id):
     post = Post.query.get_or_404(post_id)
+    if current_user != post.author and not current_user.can('MODERATE'):
+        abort(403)
+
     db.session.delete(post)
     db.session.commit()
     flash('Post deleted.', 'success')
@@ -123,21 +127,21 @@ def reply_comment(comment_id):
     return redirect(
         url_for('.show_post', post_id=comment.post_id, reply=comment_id, author=comment.author) + '#comment-form')
 
-@main_bp.route('/search')
-def search():
-    q = request.args.get('q', '')
-    if q == '':
-        flash('Enter keyword about post.', 'warning')
-        return redirect_back()
-
-    category = request.args.get('category', 'post')
-    page = request.args.get('page', 1, type=int)
-    per_page = current_app.config['BLOG_SEARCH_RESULT_PER_PAGE']
-    if category == 'post':
-        pagination = Post.query.whooshee_search(q).paginate(page, per_page)
-    # elif category == 'user':
-    #     pagination = User.query.whooshee_search(q).paginate(page, per_page)
-    elif category == 'comment':
-        pagination = Comment.query.whooshee_search(q).paginate(page, per_page)
-    results = pagination.items
-    return render_template('main/search.html', q=q, results=results, pagination=pagination, category=category)
+# @main_bp.route('/search')
+# def search():
+#     q = request.args.get('q', '')
+#     if q == '':
+#         flash('Enter keyword about post.', 'warning')
+#         return redirect_back()
+#
+#     category = request.args.get('category', 'post')
+#     page = request.args.get('page', 1, type=int)
+#     per_page = current_app.config['BLOG_SEARCH_RESULT_PER_PAGE']
+#     if category == 'post':
+#         pagination = Post.query.whooshee_search(q).paginate(page, per_page)
+#     # elif category == 'user':
+#     #     pagination = User.query.whooshee_search(q).paginate(page, per_page)
+#     elif category == 'comment':
+#         pagination = Comment.query.whooshee_search(q).paginate(page, per_page)
+#     results = pagination.items
+#     return render_template('main/search.html', q=q, results=results, pagination=pagination, category=category)

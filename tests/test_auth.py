@@ -1,8 +1,6 @@
 from flask import url_for
 
 from blog.models import User
-from blog.settings import Operations
-from blog.utils import generate_token
 from tests.base import BaseTestCase
 
 

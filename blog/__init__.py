@@ -9,8 +9,10 @@ from blog.blueprints.auth import auth_bp
 from blog.blueprints.main import main_bp
 from blog.blueprints.user import user_bp
 from blog.blueprints.admin import admin_bp
-from blog.extensions import bootstrap, db, login_manager, mail, moment, whooshee, csrf, migrate
-from blog.models import Role, User, Permission, Post, Category, Comment, Collect
+from blog.extensions import bootstrap, db, login_manager, moment, csrf, migrate
+# from blog.extensions import mail, whoooshee
+from blog.models import Role, User, Permission, Post, Category, Comment
+# from blog.models import Collect
 from blog.settings import config
 from werkzeug.contrib.fixers import ProxyFix
 
@@ -25,7 +27,7 @@ def create_app(config_name=None):
     app = Flask('blog')
 
     app.config.from_object(config[config_name])
-
+    app.wsgi_app = ProxyFix(app.wsgi_app)
     register_extensions(app)
     register_blueprints(app)
     register_commands(app)
@@ -72,9 +74,9 @@ def register_extensions(app):
     bootstrap.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
-    mail.init_app(app)
+    # mail.init_app(app)
     moment.init_app(app)
-    whooshee.init_app(app)
+    # whooshee.init_app(app)
     csrf.init_app(app)
     migrate.init_app(app, db)
 
@@ -88,7 +90,7 @@ def register_blueprints(app):
 def register_shell_context(app):
     @app.shell_context_processor
     def make_shell_context():
-        return dict(db=db, User=User, Post=Post, Collect=Collect, Category= Category, Comment=Comment)
+        return dict(db=db, User=User, Post=Post, Category= Category, Comment=Comment)
 
 
 def register_template_context(app):
@@ -133,7 +135,7 @@ def register_commands(app):
 
     @app.cli.command()
     def init():
-        """Initialize Albumy."""
+        """Initialize Blog."""
         click.echo('Initializing the database...')
         db.create_all()
 
@@ -145,13 +147,13 @@ def register_commands(app):
     @app.cli.command()
     @click.option('--user', default=10, help='Quantity of users, default is 10.')
     @click.option('--post', default=50, help='Quantity of posts, default is 50.')
-    @click.option('--collect', default=50, help='Quantity of collects, default is 500.')
-    @click.option('--comment', default=100, help='Quantity of comments, default is 500.')
-    @click.option('--category', default=20, help='Quantity of categories, default is 500.')
-    def forge(user, collect, post, category, comment):
+    # @click.option('--collect', default=50, help='Quantity of collects, default is 50.')
+    @click.option('--comment', default=500, help='Quantity of comments, default is 500.')
+    @click.option('--category', default=20, help='Quantity of categories, default is 20.')
+    def forge(user, post, category, comment):
         """Generate fake data."""
 
-        from blog.fakes import fake_admin, fake_user, fake_categories, fake_post, fake_comment, fake_collect
+        from blog.fakes import fake_admin, fake_user, fake_categories, fake_post, fake_comment
 
         db.drop_all()
         db.create_all()
@@ -166,10 +168,8 @@ def register_commands(app):
         fake_categories(category)
         click.echo('Generating %d posts...' % post)
         fake_post(post)
-        click.echo('Generating %d collects...' % collect)
-        fake_collect(collect)
+        # click.echo('Generating %d collects...' % collect)
+        # fake_collect(collect)
         click.echo('Generating %d comments...' % comment)
         fake_comment(comment)
         click.echo('Done.')
-
-app.wsgi_app = ProxyFix(app.wsgi_app)

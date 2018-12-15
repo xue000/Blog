@@ -1,9 +1,15 @@
-{% extends 'base.html' %}
+{% extends 'admin/index.html' %}
 {% from 'bootstrap/form.html' import render_form %}
 
 {% block title %}Manage Categories{% endblock %}
 
 {% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            {{ render_breadcrumb_item('admin.index', 'Dashboard Home') }}
+            {{ render_breadcrumb_item('admin.manage_category', 'Manage Category') }}
+        </ol>
+    </nav>
     <div class="page-header">
         <h1>Categories
             <small class="text-muted">{{ categories|length }}</small>
@@ -34,7 +40,7 @@
 
                             <form class="inline" method="post"
                                   action="{{ url_for('.delete_category', category_id=category.id) }}">
-{#                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>#}
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                                 <button type="submit" class="btn btn-danger btn-sm"
                                         onclick="return confirm('Are you sure?');">Delete
                                 </button>

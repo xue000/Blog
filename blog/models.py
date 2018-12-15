@@ -2,7 +2,8 @@ from datetime import datetime
 from flask import current_app
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-from blog.extensions import db, whooshee
+from blog.extensions import db
+# from blog.extensions import whooshee
 
 # relationship table
 roles_permissions = db.Table('roles_permissions',
@@ -46,7 +47,7 @@ class Role(db.Model):
                 role.permissions.append(permission)
         db.session.commit()
 
-@whooshee.register_model('name')
+# @whooshee.register_model('name')
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, index=True)
@@ -58,7 +59,6 @@ class User(db.Model, UserMixin):
     location = db.Column(db.String(50))
     member_since = db.Column(db.DateTime, default=datetime.utcnow)
 
-    confirmed = db.Column(db.Boolean, default=False)
     locked = db.Column(db.Boolean, default=False)
     active = db.Column(db.Boolean, default=True)
 
@@ -67,7 +67,7 @@ class User(db.Model, UserMixin):
     posts = db.relationship('Post', back_populates='author', cascade='all')
     comments = db.relationship('Comment', back_populates='author', cascade='all')
 
-    collections = db.relationship('Collect', back_populates='collector', cascade='all')
+    # collections = db.relationship('Collect', back_populates='collector', cascade='all')
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -91,18 +91,18 @@ class User(db.Model, UserMixin):
     def is_admin(self):
         return self.role.name == 'Administrator'
 
-    def is_collecting(self, photo):
-        return Collect.query.with_parent(self).filter_by(collected_id=photo.id).first() is not None
-
     def can(self, permission_name):
         permission = Permission.query.filter_by(name=permission_name).first()
         return permission is not None and self.role is not None and permission in self.role.permissions
 
-    def collect(self, post):
-        if not self.is_collecting(post):
-            collect = Collect(collector=self, collected=post)
-            db.session.add(collect)
-            db.session.commit()
+    # def is_collecting(self, photo):
+    #     return Collect.query.with_parent(self).filter_by(collected_id=photo.id).first() is not None
+
+    # def collect(self, post):
+    #     if not self.is_collecting(post):
+    #         collect = Collect(collector=self, collected=post)
+    #         db.session.add(collect)
+    #         db.session.commit()
 
     def lock(self):
         self.locked = True
@@ -122,15 +122,15 @@ class User(db.Model, UserMixin):
         self.active = True
         db.session.commit()
 
-class Collect(db.Model):
-    collector_id = db.Column(db.Integer, db.ForeignKey('user.id'),
-                             primary_key=True)
-    collected_id = db.Column(db.Integer, db.ForeignKey('post.id'),
-                             primary_key=True)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-
-    collector = db.relationship('User', back_populates='collections', lazy='joined')
-    collected = db.relationship('Post', back_populates='collectors', lazy='joined')
+# class Collect(db.Model):
+#     collector_id = db.Column(db.Integer, db.ForeignKey('user.id'),
+#                              primary_key=True)
+#     collected_id = db.Column(db.Integer, db.ForeignKey('post.id'),
+#                              primary_key=True)
+#     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+#
+#     collector = db.relationship('User', back_populates='collections', lazy='joined')
+#     collected = db.relationship('Post', back_populates='collectors', lazy='joined')
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -145,7 +145,7 @@ class Category(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-@whooshee.register_model('body')
+# @whooshee.register_model('body')
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(60))
@@ -161,10 +161,10 @@ class Post(db.Model):
     category = db.relationship('Category', back_populates='posts')
 
     comments = db.relationship('Comment', back_populates='post', cascade='all, delete-orphan')
-    collectors = db.relationship('Collect', back_populates='collected', cascade='all')
+    # collectors = db.relationship('Collect', back_populates='collected', cascade='all')
 
 
-@whooshee.register_model('body')
+# @whooshee.register_model('body')
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.Text)

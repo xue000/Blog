@@ -16,11 +16,11 @@ def index(username):
     if user == current_user and not user.active:
         logout_user()
 
-    # page = request.args.get('page', 1, type=int)
-    # per_page = current_app.config['ALBUMY_PHOTO_PER_PAGE']
-    # pagination = Photo.query.with_parent(user).order_by(Photo.timestamp.desc()).paginate(page, per_page)
-    # photos = pagination.items
-    return render_template('user/index.html', user=user)
+    page = request.args.get('page', 1, type=int)
+    per_page = current_app.config['BLOG_POST_PER_PAGE']
+    pagination = Post.query.with_parent(user).order_by(Post.timestamp.desc()).paginate(page, per_page)
+    posts = pagination.items
+    return render_template('user/index.html', user=user, pagination=pagination, posts=posts)
 
 @user_bp.route('/settings/profile', methods=['GET', 'POST'])
 @login_required
@@ -46,11 +46,13 @@ def edit_profile():
 @fresh_login_required
 def change_password():
     form = ChangePasswordForm()
-    if form.validate_on_submit() and current_user.validate_password(form.old_password.data):
-        current_user.set_password(form.password.data)
-        db.session.commit()
-        flash('Password updated.', 'success')
-        return redirect(url_for('.index', username=current_user.username))
+    if form.validate_on_submit():
+        if current_user.validate_password(form.old_password.data):
+            current_user.set_password(form.password.data)
+            db.session.commit()
+            flash('Password updated.', 'success')
+            return redirect(url_for('.index', username=current_user.username))
+        flash('Invalid password.', 'warning')
     return render_template('user/settings/change_password.html', form=form)
 
 

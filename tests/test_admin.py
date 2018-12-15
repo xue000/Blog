@@ -19,7 +19,7 @@ class AdminTestCase(BaseTestCase):
         self.logout()
         response = self.client.get(url_for('admin.index'), follow_redirects=True)
         data = response.get_data(as_text=True)
-        self.assertIn('Please log in to access this page.', data)
+        self.assertIn('Please log in to access this page', data)
         self.assertNotIn('Blog Dashboard', data)
 
         self.login()  # normal user, without MODERATOR permission
@@ -165,12 +165,6 @@ class AdminTestCase(BaseTestCase):
         response = self.client.get(url_for('admin.manage_comment'))
         data = response.get_data(as_text=True)
         self.assertIn('Manage Comments', data)
-        self.assertIn('Order by flag <span class="oi oi-elevator"></span>', data)
-
-        response = self.client.get(url_for('admin.manage_comment', order='by_time'))
-        data = response.get_data(as_text=True)
-        self.assertIn('Manage Comments', data)
-        self.assertIn('Order by time <span class="oi oi-elevator"></span>', data)
 #     def setUp(self):
 #         super(AdminTestCase, self).setUp()
 #         self.login(email='admin@helloflask.com', password='helloflask')

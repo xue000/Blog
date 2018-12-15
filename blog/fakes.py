@@ -9,14 +9,14 @@ fake = Faker()
 
 
 def fake_admin():
-    admin = User(name='Grey Li',
-                 username='greyli',
+    admin = User(name='Difan Xue',
+                 username='xuedifan',
                  email='admin@helloflask.com',
                  bio=fake.sentence(),
                  location=fake.city(),
                  member_since=fake.date_this_decade(),
-                 website='http://greyli.com',
-                 confirmed=True)
+                 website='http://xuedifan.pythonanywhere.com',
+                 )
     admin.set_password('helloflask')
     db.session.add(admin)
     db.session.commit()
@@ -25,7 +25,6 @@ def fake_admin():
 def fake_user(count=10):
     for i in range(count):
         user = User(name=fake.name(),
-                    confirmed=True,
                     username=fake.user_name(),
                     bio=fake.sentence(),
                     location=fake.city(),
@@ -54,16 +53,17 @@ def fake_post(count=50):
             title=fake.sentence(),
             body=fake.text(2000),
             category=Category.query.get(random.randint(1, Category.query.count())),
-            timestamp=fake.date_time_this_year()
+            timestamp=fake.date_time_this_year(),
+            author = User.query.get(random.randint(1, User.query.count()))
         )
         db.session.add(post)
     db.session.commit()
 
-def fake_collect(count=50):
-    for i in range(count):
-        user = User.query.get(random.randint(1, User.query.count()))
-        user.collect(Post.query.get(random.randint(1, Post.query.count())))
-    db.session.commit()
+# def fake_collect(count=50):
+#     for i in range(count):
+#         user = User.query.get(random.randint(1, User.query.count()))
+#         user.collect(Post.query.get(random.randint(1, Post.query.count())))
+#     db.session.commit()
 
 def fake_comment(count=500):
     for i in range(count):

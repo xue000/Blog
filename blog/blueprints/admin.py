@@ -10,7 +10,6 @@ from blog.utils import redirect_back
 
 admin_bp = Blueprint('admin', __name__)
 
-
 @admin_bp.route('/')
 @login_required
 @permission_required('MODERATE')
@@ -20,10 +19,10 @@ def index():
     blocked_user_count = User.query.filter_by(active=False).count()
     post_count = Post.query.count()
     comment_count = Comment.query.count()
-
+    category_count = Category.query.count()
     reported_comments_count = Comment.query.filter(Comment.flag > 0).count()
     return render_template('admin/index.html', user_count=user_count, post_count=post_count, comment_count=comment_count, locked_user_count=locked_user_count,
-                           blocked_user_count=blocked_user_count, reported_comments_count=reported_comments_count,
+                           blocked_user_count=blocked_user_count, reported_comments_count=reported_comments_count,category_count=category_count
                            )
 
 
@@ -204,18 +203,12 @@ def delete_category(category_id):
     flash('Category deleted.', 'success')
     return redirect(url_for('.manage_category'))
 
-@admin_bp.route('/manage/comment', defaults={'order': 'by_flag'})
-@admin_bp.route('/manage/comment/<order>')
+@admin_bp.route('/manage/comment')
 @login_required
 @permission_required('MODERATE')
-def manage_comment(order):
+def manage_comment():
     page = request.args.get('page', 1, type=int)
-    per_page = current_app.config['ALBUMY_MANAGE_COMMENT_PER_PAGE']
-    order_rule = 'flag'
-    if order == 'by_time':
-        pagination = Comment.query.order_by(Comment.timestamp.desc()).paginate(page, per_page)
-        order_rule = 'time'
-    else:
-        pagination = Comment.query.order_by(Comment.flag.desc()).paginate(page, per_page)
+    per_page = current_app.config['BLOG_MANAGE_COMMENT_PER_PAGE']
+    pagination = Comment.query.order_by(Comment.timestamp.desc()).paginate(page, per_page)
     comments = pagination.items
-    return render_template('admin/manage_comment.html', pagination=pagination, comments=comments, order_rule=order_rule)
+    return render_template('admin/manage_comment.html', pagination=pagination, comments=comments)

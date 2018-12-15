@@ -32,13 +32,13 @@
             <div class="collapse navbar-collapse" id="navbarColor01">
                 <div class="navbar-nav mr-auto">
                     {{ render_nav_item('main.index', 'Home') }}
-                    <form class="form-inline my-2 my-lg-0" action="{{ url_for('main.search') }}">
-                        <input type="text" name="q" class="form-control mr-sm-1" placeholder="Post"
-                               required>
-                        <button class="btn btn-light my-2 my-sm-0" type="submit">
-                            <span class="oi oi-magnifying-glass"></span>
-                        </button>
-                    </form>
+{#                    <form class="form-inline my-2 my-lg-0" action="{{ url_for('main.search') }}">#}
+{#                        <input type="text" name="q" class="form-control mr-sm-1" placeholder="Post"#}
+{#                               required>#}
+{#                        <button class="btn btn-light my-2 my-sm-0" type="submit">#}
+{#                            <span class="oi oi-magnifying-glass"></span>#}
+{#                        </button>#}
+{#                    </form>#}
                 </div>
                 <div class="navbar-nav ml-auto">
                 {% if current_user.is_authenticated %}
@@ -94,7 +94,7 @@
             <footer>
                 <p class="float-left">
                     <small>&copy; 2018
-                        <a title="Written by Grey Li">Difan Xue</a> -
+                        <a href="http://xuedifan.pythonanywhere.com/" title="Written by Xue Difan">Difan Xue</a> -
                         <a href="https://github.com/xue000" title="Fork me on GitHub">GitHub</a> -
                         <a href="http://helloflask.com" title="A HelloFlask project">HelloFlask</a>
                     </small>

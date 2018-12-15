@@ -1,6 +1,34 @@
 {% extends 'base.html' %}
+{% from 'bootstrap/pagination.html' import render_pagination, render_pager  %}
 
 {% block title %}{{ user.name }}{% endblock %}
 
 {% block content %}
+    <div class="row">
+        <div class="col-sm-8">
+            <h1>{{ user.name }}
+                <small class="text-muted">{{ user.username }}</small>
+            </h1><br>
+            {% if user.bio %}<p>{{ user.bio }}</p>{% endif %}
+            <br>
+            <p>
+                {% if user.website %}
+                    <span class="oi oi-link-intact"></span>
+                    <a href="{{ user.website }}" target="_blank">{{ user.website|truncate(30) }}</a>&nbsp;&nbsp;
+                {% endif %}
+                {% if user.location %}
+                    <span class="oi oi-map-marker"></span>
+                    <a href="https://www.google.com/maps?q={{ user.location }}"
+                       target="_blank">{{ user.location|truncate(30) }}</a>&nbsp;&nbsp;
+                {% endif %}
+                <span class="oi oi-calendar"></span>
+                Joined {{ moment(user.member_since).format('LL') }}
+            </p>
+            <hr>
+            {% include 'main/_posts.html' %}
+            {% if posts %}
+                <div class="page-footer">{{ render_pager(pagination) }}</div>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}

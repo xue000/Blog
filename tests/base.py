@@ -19,21 +19,21 @@ class BaseTestCase(unittest.TestCase):
         db.create_all()
         Role.init_role()
 
-        admin_user = User(email='admin@helloflask.com', name='Admin', username='admin', confirmed=True)
+        admin_user = User(email='admin@helloflask.com', name='Admin', username='admin')
         admin_user.set_password('123')
         admin_user.set_role()
-        normal_user = User(email='normal@helloflask.com', name='Normal User', username='normal', confirmed=True)
+        normal_user = User(email='normal@helloflask.com', name='Normal User', username='normal')
         normal_user.set_password('123')
         unconfirmed_user = User(email='unconfirmed@helloflask.com', name='Unconfirmed', username='unconfirmed',
-                                confirmed=False)
+                                )
         unconfirmed_user.set_password('123')
         locked_user = User(email='locked@helloflask.com', name='Locked User', username='locked',
-                           confirmed=True, locked=True)
+                            locked=True)
         locked_user.set_password('123')
         locked_user.lock()
 
         blocked_user = User(email='blocked@helloflask.com', name='Blocked User', username='blocked',
-                            confirmed=True, active=False)
+                             active=False)
         blocked_user.set_password('123')
 
 

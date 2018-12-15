@@ -11,11 +11,11 @@ else:
     prefix = 'sqlite:////'
 
 
-class Operations:
-    CONFIRM = 'confirm'
-    RESET_PASSWORD = 'reset-password'
-    CHANGE_EMAIL = 'change-email'
-    CHANGE_PASSWORD = 'change-password'
+# class Operations:
+#     # CONFIRM = 'confirm'
+#     # RESET_PASSWORD = 'reset-password'
+#     # CHANGE_EMAIL = 'change-email'
+#     CHANGE_PASSWORD = 'change-password'
 
 
 class BaseConfig:
@@ -42,7 +42,7 @@ class BaseConfig:
     MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
     MAIL_DEFAULT_SENDER = ('Albumy Admin', MAIL_USERNAME)
 
-    WHOOSHEE_MIN_STRING_LEN = 1
+    # WHOOSHEE_MIN_STRING_LEN = 1
 
 class DevelopmentConfig(BaseConfig):
     SQLALCHEMY_DATABASE_URI = \

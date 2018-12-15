@@ -31,9 +31,9 @@
                     <div class="dropdown nav-item">
                         <div class="dropdown-menu dropdown-menu-right" role="menu">
                             <h6 class="dropdown-header">Logged in as {{ current_user.username }}</h6>
-{#                            <a class="dropdown-item" href="{{ url_for('user.index', username=current_user.username) }}">#}
-{#                                <span class="oi oi-person"></span> My Home#}
-{#                            </a>#}
+                            <a class="dropdown-item" href="{{ url_for('user.index', username=current_user.username) }}">
+                                <span class="oi oi-person"></span> My Home
+                            </a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{{ url_for('user.edit_profile') }}">
                                 <span class="oi oi-cog"></span> Settings
@@ -88,7 +88,7 @@
                 <div class="card-header"><span class="oi oi-comment-square"></span> Comments</div>
                 <div class="card-body">
                     <h4 class="card-title">Total: {{ comment_count|default('0') }}</h4>
-                    <p class="card-text">Reported: {{ reported_comments_count|default('0') }}</p>
+                    <p class="card-text">&nbsp;</p>
                     <a class="btn btn-primary text-white" href="{{ url_for('.manage_comment') }}">Manage</a>
                 </div>
             </div>
@@ -97,7 +97,7 @@
             <div class="card border-success mb-3">
                 <div class="card-header"><span class="oi oi-tag"></span> Categories</div>
                 <div class="card-body">
-                    <h4 class="card-title">Total: {{ tag_count|default('0') }}</h4>
+                    <h4 class="card-title">Total: {{ category_count|default('0') }}</h4>
                     <p class="card-text">&nbsp;</p>
                     <a class="btn btn-primary text-white" href="{{ url_for('.manage_category') }}">Manage</a>
                 </div>
